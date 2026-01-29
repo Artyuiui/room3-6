@@ -2,207 +2,207 @@
 <html lang="th" class="h-full">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ติดตามการส่งรูปของแต่ละห้องเรียน</title>
-    <script src="/_sdk/data_sdk.js"></script>
-    <script src="/_sdk/element_sdk.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&amp;display=swap" rel="stylesheet">
-    <style>
-        body {
-            box-sizing: border-box;
-            font-family: 'Sarabun', sans-serif;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ติดตามการส่งรูปของแต่ละห้องเรียน</title>
+  <script src="/_sdk/data_sdk.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+    body {
+      box-sizing: border-box;
+      font-family: 'Sarabun', sans-serif;
+    }
 
-        .room-card {
-            transition: all 0.3s ease;
-        }
+    .room-card {
+      transition: all 0.3s ease;
+    }
 
-        .room-card:hover {
-            transform: translateY(-2px);
-        }
+    .room-card:hover {
+      transform: translateY(-2px);
+    }
 
-        .submitted {
-            animation: fadeIn 0.5s ease;
-        }
+    .submitted {
+      animation: fadeIn 0.5s ease;
+    }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: scale(0.95);
-            }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.95);
+      }
 
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
 
-        .status-badge {
-            transition: all 0.2s ease;
-        }
+    .status-badge {
+      transition: all 0.2s ease;
+    }
 
-        .loading-spinner {
-            border: 3px solid #f3f4f6;
-            border-top: 3px solid #3b82f6;
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            animation: spin 1s linear infinite;
-        }
+    .loading-spinner {
+      border: 3px solid #f3f4f6;
+      border-top: 3px solid #3b82f6;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      animation: spin 1s linear infinite;
+    }
 
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
 
-            100% {
-                transform: rotate(360deg);
-            }
-        }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
 
-        .pending-pulse {
-            animation: pulse 2s ease-in-out infinite;
-        }
+    .pending-pulse {
+      animation: pulse 2s ease-in-out infinite;
+    }
 
-        @keyframes pulse {
+    @keyframes pulse {
 
-            0%,
-            100% {
-                opacity: 1;
-            }
+      0%,
+      100% {
+        opacity: 1;
+      }
 
-            50% {
-                opacity: 0.6;
-            }
-        }
-    </style>
-    <style>
-        @view-transition {
-            navigation: auto;
-        }
-    </style>
+      50% {
+        opacity: 0.6;
+      }
+    }
+  </style>
+  <style>
+    @view-transition {
+      navigation: auto;
+    }
+  </style>
 </head>
 
 <body class="h-full">
-    <div id="app" class="h-full w-full overflow-auto"></div>
-    <script>
-        const ROOMS = [
-            { id: 'm3-1', grade: 3, section: 1, has_submitted: true },
-            { id: 'm3-2', grade: 3, section: 2, has_submitted: false },
-            { id: 'm3-3', grade: 3, section: 3, has_submitted: true },
-            { id: 'm3-4', grade: 3, section: 4, has_submitted: false },
-            { id: 'm3-5', grade: 3, section: 5, has_submitted: true },
-            { id: 'm3-6', grade: 3, section: 6, has_submitted: false },
-            { id: 'm3-7', grade: 3, section: 7, has_submitted: true },
-            { id: 'm3-8', grade: 3, section: 8, has_submitted: false },
-            { id: 'm3-9', grade: 3, section: 9, has_submitted: true },
-            { id: 'm3-10', grade: 3, section: 10, has_submitted: false },
-            { id: 'm6-1', grade: 6, section: 1, has_submitted: false },
-            { id: 'm6-2', grade: 6, section: 2, has_submitted: false },
-            { id: 'm6-3', grade: 6, section: 3, has_submitted: false },
-            { id: 'm6-4', grade: 6, section: 4, has_submitted: false },
-            { id: 'm6-5', grade: 6, section: 5, has_submitted: false },
-            { id: 'm6-6', grade: 6, section: 6, has_submitted: true },
-            { id: 'm6-7', grade: 6, section: 7, has_submitted: false },
-            { id: 'm6-8', grade: 6, section: 8, has_submitted: true }
-        ];
+  <div id="app" class="h-full w-full overflow-auto"></div>
+  <script>
+    const ROOMS = [
+      { id: 'm3-1', grade: 3, section: 1, has_submitted: true },
+      { id: 'm3-2', grade: 3, section: 2, has_submitted: false },
+      { id: 'm3-3', grade: 3, section: 3, has_submitted: true },
+      { id: 'm3-4', grade: 3, section: 4, has_submitted: false },
+      { id: 'm3-5', grade: 3, section: 5, has_submitted: true },
+      { id: 'm3-6', grade: 3, section: 6, has_submitted: false },
+      { id: 'm3-7', grade: 3, section: 7, has_submitted: true },
+      { id: 'm3-8', grade: 3, section: 8, has_submitted: false },
+      { id: 'm3-9', grade: 3, section: 9, has_submitted: true },
+      { id: 'm3-10', grade: 3, section: 10, has_submitted: false },
+      { id: 'm6-1', grade: 6, section: 1, has_submitted: false },
+      { id: 'm6-2', grade: 6, section: 2, has_submitted: false },
+      { id: 'm6-3', grade: 6, section: 3, has_submitted: false },
+      { id: 'm6-4', grade: 6, section: 4, has_submitted: false },
+      { id: 'm6-5', grade: 6, section: 5, has_submitted: true },
+      { id: 'm6-6', grade: 6, section: 6, has_submitted: true },
+      { id: 'm6-7', grade: 6, section: 7, has_submitted: false },
+      { id: 'm6-8', grade: 6, section: 8, has_submitted: true }
+    ];
 
-        const defaultConfig = {
-            page_title: 'สถานะการส่งรูปถ่าย',
-            subtitle: 'ติดตามการส่งรูปของแต่ละห้องเรียน',
-            submitted_label: 'ส่งแล้ว',
-            pending_label: 'รอส่ง',
-            background_color: '#f0f9ff',
-            card_color: '#ffffff',
-            text_color: '#1e293b',
-            submitted_color: '#10b981',
-            pending_color: '#f59e0b',
-            font_family: 'Sarabun',
-            font_size: 16
+    const defaultConfig = {
+      page_title: 'สถานะการส่งรูปถ่าย',
+      subtitle: 'ติดตามการส่งรูปของแต่ละห้องเรียน',
+      submitted_label: 'ส่งแล้ว',
+      pending_label: 'รอส่ง',
+      background_color: '#f0f9ff',
+      card_color: '#ffffff',
+      text_color: '#1e293b',
+      submitted_color: '#10b981',
+      pending_color: '#f59e0b',
+      font_family: 'Sarabun',
+      font_size: 16
+    };
+
+    let submissionData = [];
+    let loadingStates = new Set();
+
+    const dataHandler = {
+      onDataChanged(data) {
+        submissionData = data;
+        renderApp();
+      }
+    };
+
+    async function initializeSdk() {
+      const result = await window.dataSdk.init(dataHandler);
+      if (!result.isOk) {
+        console.error('Failed to initialize data SDK');
+      }
+    }
+
+    function getSubmissionStatus(roomId) {
+      const serverStatus = submissionData.find(s => s.room_id === roomId);
+      if (serverStatus) return serverStatus;
+
+      const roomConfig = ROOMS.find(r => r.id === roomId);
+      if (roomConfig && typeof roomConfig.has_submitted !== 'undefined') {
+        return {
+          room_id: roomId,
+          has_submitted: roomConfig.has_submitted,
+          submitted_at: roomConfig.submitted_at
         };
+      }
+      return undefined;
+    }
 
-        let submissionData = [];
-        let loadingStates = new Set();
+    async function toggleSubmission(roomId) {
+      if (loadingStates.has(roomId)) return;
 
-        const dataHandler = {
-            onDataChanged(data) {
-                submissionData = data;
-                renderApp();
-            }
+      const currentStatus = getSubmissionStatus(roomId);
+      loadingStates.add(roomId);
+      renderApp();
+
+      if (currentStatus) {
+        const updatedRecord = {
+          ...currentStatus,
+          has_submitted: !currentStatus.has_submitted,
+          submitted_at: !currentStatus.has_submitted ? new Date().toISOString() : null
         };
+        const result = await window.dataSdk.update(updatedRecord);
 
-        async function initializeSdk() {
-            const result = await window.dataSdk.init(dataHandler);
-            if (!result.isOk) {
-                console.error('Failed to initialize data SDK');
-            }
+        if (!result.isOk) {
+          console.error('Failed to update submission status');
         }
+      } else {
+        const newRecord = {
+          room_id: roomId,
+          has_submitted: true,
+          submitted_at: new Date().toISOString()
+        };
+        const result = await window.dataSdk.create(newRecord);
 
-        function getSubmissionStatus(roomId) {
-            const serverStatus = submissionData.find(s => s.room_id === roomId);
-            if (serverStatus) return serverStatus;
-
-            const roomConfig = ROOMS.find(r => r.id === roomId);
-            if (roomConfig && typeof roomConfig.has_submitted !== 'undefined') {
-                return {
-                    room_id: roomId,
-                    has_submitted: roomConfig.has_submitted,
-                    submitted_at: roomConfig.submitted_at
-                };
-            }
-            return undefined;
+        if (!result.isOk) {
+          console.error('Failed to create submission status');
         }
+      }
 
-        async function toggleSubmission(roomId) {
-            if (loadingStates.has(roomId)) return;
+      loadingStates.delete(roomId);
+      renderApp();
+    }
 
-            const currentStatus = getSubmissionStatus(roomId);
-            loadingStates.add(roomId);
-            renderApp();
+    function renderApp() {
+      const config = window.elementSdk?.config || defaultConfig;
+      const baseSize = config.font_size || defaultConfig.font_size;
+      const customFont = config.font_family || defaultConfig.font_family;
+      const fontStack = `${customFont}, sans-serif`;
 
-            if (currentStatus) {
-                const updatedRecord = {
-                    ...currentStatus,
-                    has_submitted: !currentStatus.has_submitted,
-                    submitted_at: !currentStatus.has_submitted ? new Date().toISOString() : null
-                };
-                const result = await window.dataSdk.update(updatedRecord);
+      const m3Rooms = ROOMS.filter(r => r.grade === 3);
+      const m6Rooms = ROOMS.filter(r => r.grade === 6);
 
-                if (!result.isOk) {
-                    console.error('Failed to update submission status');
-                }
-            } else {
-                const newRecord = {
-                    room_id: roomId,
-                    has_submitted: true,
-                    submitted_at: new Date().toISOString()
-                };
-                const result = await window.dataSdk.create(newRecord);
+      const m3Submitted = m3Rooms.filter(r => getSubmissionStatus(r.id)?.has_submitted).length;
+      const m6Submitted = m6Rooms.filter(r => getSubmissionStatus(r.id)?.has_submitted).length;
 
-                if (!result.isOk) {
-                    console.error('Failed to create submission status');
-                }
-            }
-
-            loadingStates.delete(roomId);
-            renderApp();
-        }
-
-        function renderApp() {
-            const config = window.elementSdk?.config || defaultConfig;
-            const baseSize = config.font_size || defaultConfig.font_size;
-            const customFont = config.font_family || defaultConfig.font_family;
-            const fontStack = `${customFont}, sans-serif`;
-
-            const m3Rooms = ROOMS.filter(r => r.grade === 3);
-            const m6Rooms = ROOMS.filter(r => r.grade === 6);
-
-            const m3Submitted = m3Rooms.filter(r => getSubmissionStatus(r.id)?.has_submitted).length;
-            const m6Submitted = m6Rooms.filter(r => getSubmissionStatus(r.id)?.has_submitted).length;
-
-            document.getElementById('app').innerHTML = `
+      document.getElementById('app').innerHTML = `
         <div class="w-full h-full" style="background: ${config.background_color || defaultConfig.background_color}; color: ${config.text_color || defaultConfig.text_color}; font-family: ${fontStack};">
           <div class="max-w-7xl mx-auto px-4 py-8">
             <!-- Header -->
@@ -280,20 +280,20 @@
           </div>
         </div>
       `;
-        }
+    }
 
-        function renderRoomCard(room, config, baseSize, fontStack) {
-            const status = getSubmissionStatus(room.id);
-            const isSubmitted = status?.has_submitted || false;
-            const isLoading = loadingStates.has(room.id);
-            const statusColor = isSubmitted
-                ? (config.submitted_color || defaultConfig.submitted_color)
-                : (config.pending_color || defaultConfig.pending_color);
-            const statusLabel = isSubmitted
-                ? (config.submitted_label || defaultConfig.submitted_label)
-                : (config.pending_label || defaultConfig.pending_label);
+    function renderRoomCard(room, config, baseSize, fontStack) {
+      const status = getSubmissionStatus(room.id);
+      const isSubmitted = status?.has_submitted || false;
+      const isLoading = loadingStates.has(room.id);
+      const statusColor = isSubmitted
+        ? (config.submitted_color || defaultConfig.submitted_color)
+        : (config.pending_color || defaultConfig.pending_color);
+      const statusLabel = isSubmitted
+        ? (config.submitted_label || defaultConfig.submitted_label)
+        : (config.pending_label || defaultConfig.pending_label);
 
-            return `
+      return `
         <div class="room-card p-6 rounded-xl text-center ${isSubmitted ? 'submitted' : ''}"
              style="background: ${config.card_color || defaultConfig.card_color}; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
           <div class="font-bold mb-3" style="font-size: ${baseSize * 1.3}px; font-family: ${fontStack};">
@@ -306,92 +306,92 @@
           ${isSubmitted && status?.submitted_at ? `
             <div class="mt-2" style="font-size: ${baseSize * 0.75}px; opacity: 0.6; font-family: ${fontStack};">
               ${new Date(status.submitted_at).toLocaleString('th-TH', {
-                day: '2-digit',
-                month: 'short',
-                hour: '2-digit',
-                minute: '2-digit'
-            })}
+        day: '2-digit',
+        month: 'short',
+        hour: '2-digit',
+        minute: '2-digit'
+      })}
             </div>
           ` : ''}
         </div>
       `;
-        }
+    }
 
-        async function onConfigChange(config) {
-            renderApp();
-        }
+    async function onConfigChange(config) {
+      renderApp();
+    }
 
-        if (window.elementSdk) {
-            window.elementSdk.init({
-                defaultConfig,
-                onConfigChange,
-                mapToCapabilities: (config) => ({
-                    recolorables: [
-                        {
-                            get: () => config.background_color || defaultConfig.background_color,
-                            set: (value) => {
-                                config.background_color = value;
-                                window.elementSdk.setConfig({ background_color: value });
-                            }
-                        },
-                        {
-                            get: () => config.card_color || defaultConfig.card_color,
-                            set: (value) => {
-                                config.card_color = value;
-                                window.elementSdk.setConfig({ card_color: value });
-                            }
-                        },
-                        {
-                            get: () => config.text_color || defaultConfig.text_color,
-                            set: (value) => {
-                                config.text_color = value;
-                                window.elementSdk.setConfig({ text_color: value });
-                            }
-                        },
-                        {
-                            get: () => config.submitted_color || defaultConfig.submitted_color,
-                            set: (value) => {
-                                config.submitted_color = value;
-                                window.elementSdk.setConfig({ submitted_color: value });
-                            }
-                        },
-                        {
-                            get: () => config.pending_color || defaultConfig.pending_color,
-                            set: (value) => {
-                                config.pending_color = value;
-                                window.elementSdk.setConfig({ pending_color: value });
-                            }
-                        }
-                    ],
-                    borderables: [],
-                    fontEditable: {
-                        get: () => config.font_family || defaultConfig.font_family,
-                        set: (value) => {
-                            config.font_family = value;
-                            window.elementSdk.setConfig({ font_family: value });
-                        }
-                    },
-                    fontSizeable: {
-                        get: () => config.font_size || defaultConfig.font_size,
-                        set: (value) => {
-                            config.font_size = value;
-                            window.elementSdk.setConfig({ font_size: value });
-                        }
-                    }
-                }),
-                mapToEditPanelValues: (config) => new Map([
-                    ['page_title', config.page_title || defaultConfig.page_title],
-                    ['subtitle', config.subtitle || defaultConfig.subtitle],
-                    ['submitted_label', config.submitted_label || defaultConfig.submitted_label],
-                    ['pending_label', config.pending_label || defaultConfig.pending_label]
-                ])
-            });
-        }
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities: (config) => ({
+          recolorables: [
+            {
+              get: () => config.background_color || defaultConfig.background_color,
+              set: (value) => {
+                config.background_color = value;
+                window.elementSdk.setConfig({ background_color: value });
+              }
+            },
+            {
+              get: () => config.card_color || defaultConfig.card_color,
+              set: (value) => {
+                config.card_color = value;
+                window.elementSdk.setConfig({ card_color: value });
+              }
+            },
+            {
+              get: () => config.text_color || defaultConfig.text_color,
+              set: (value) => {
+                config.text_color = value;
+                window.elementSdk.setConfig({ text_color: value });
+              }
+            },
+            {
+              get: () => config.submitted_color || defaultConfig.submitted_color,
+              set: (value) => {
+                config.submitted_color = value;
+                window.elementSdk.setConfig({ submitted_color: value });
+              }
+            },
+            {
+              get: () => config.pending_color || defaultConfig.pending_color,
+              set: (value) => {
+                config.pending_color = value;
+                window.elementSdk.setConfig({ pending_color: value });
+              }
+            }
+          ],
+          borderables: [],
+          fontEditable: {
+            get: () => config.font_family || defaultConfig.font_family,
+            set: (value) => {
+              config.font_family = value;
+              window.elementSdk.setConfig({ font_family: value });
+            }
+          },
+          fontSizeable: {
+            get: () => config.font_size || defaultConfig.font_size,
+            set: (value) => {
+              config.font_size = value;
+              window.elementSdk.setConfig({ font_size: value });
+            }
+          }
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ['page_title', config.page_title || defaultConfig.page_title],
+          ['subtitle', config.subtitle || defaultConfig.subtitle],
+          ['submitted_label', config.submitted_label || defaultConfig.submitted_label],
+          ['pending_label', config.pending_label || defaultConfig.pending_label]
+        ])
+      });
+    }
 
-        initializeSdk();
-        renderApp();
-    </script>
-    <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'9c568231c72c45b2',t:'MTc2OTY2NjQxOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
+    initializeSdk();
+    renderApp();
+  </script>
+  <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'9c568231c72c45b2',t:'MTc2OTY2NjQxOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
 </body>
 
 </html>
